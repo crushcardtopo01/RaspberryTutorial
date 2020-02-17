@@ -9,7 +9,7 @@ Resumen: Codigo que conecta un sensor de Humedad del modulo XIDE
 		 por medio de GPIO en Raspberry.
 '''
 
-#Librer\nía para poder realizar interfaz grafica, 
+#Librería para poder realizar interfaz grafica, 
 from Tkinter import * 
 
 #Librería para poder utilizar los GPIO de la raspberry pi                            
@@ -54,7 +54,7 @@ orden='H'
 
 '''
 Se crean todos los elementos que se mostrarán en la ventana,
-la variable etiqueta sólo tendra el el texto "Valor de la humedad",
+la variable etiqueta sólo tendra  el texto "Valor de la humedad",
 la variable etiqueta1 cambiará su valor dependiendo del valor obtenido 
 del sensor.
 '''
