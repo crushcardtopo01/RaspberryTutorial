@@ -55,7 +55,7 @@ del sensor.
 '''                                         
 etiqueta = Label(RAIZ, text="Valor de la temperatura en\ngrados centigrados es:") 
 etiqueta.grid(column=4, row=5)
-etiqueta1 = Label(RAIZ, text="") #etiqueta de tipo label que nos muestra el valor de la temperatura 
+etiqueta1 = Label(RAIZ, text="")
 etiqueta1.grid(column=6, row=5)
 #Define en que tiempo y que función sera ejecutada con timer
 timer = threading.Timer(1.1,fun)                            
