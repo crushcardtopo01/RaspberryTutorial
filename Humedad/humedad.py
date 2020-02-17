@@ -75,11 +75,13 @@ RAIZ.mainloop()
 #-------- Funciones a utilizar ------------
 
 
+
+def fun():
 '''
 función:fun
 descripción: obtener y convertir los valores del sensor  
 '''
-def fun():
+
     while True:
        if (orden is "H"):
 
