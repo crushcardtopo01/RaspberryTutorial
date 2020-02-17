@@ -1,32 +1,45 @@
-“””
-AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V.
+'''
+Nombre: humedad.py 
+Creador: MICROSIDE TECHNOLOGY S.A de C.V / Carlos Trevera Davila  
+Fecha: Febrero 2020
+Resumen: Codigo que conecta un sensor de Humedad del modulo XIDE 
+		 por medio de GPIO en Raspberry.
+'''
 
-FECHA: AGOSTO 2019
+#Libreria para poder realizar interfaz grafica, 
+from Tkinter import * 
 
-**************************************************************************
+# libreria para poder utilizar los GPIO de la raspberry pi                            
+import RPi.GPIO as GPIO
 
-Esta practica consiste en realizar la medicion de Humedad por medio del sensor
-incluido en modulo XENSE.
+# librera para poder utilizar el puerto serial                   
+import serial 
 
-**************************************************************************
-“””
+# libreria para poder utilizar timers                                        
+import threading 
 
-from Tkinter import *                             #Libreria para poder realizar interfaz grafica
-import RPi.GPIO as GPIO                     # libreria para poder utilizar los GPIO de la raspberry pi
-import serial                                          # librera para poder utilizar el puerto serial
-import threading                                    # libreria para poder utilizar timers
-import time                                                 # libreria de tiempo
-import numpy as np                             #libreria para utilizacion de esquemas numericos
+# Libreria para controlar lapsos de tiempo                                   
+import time 
 
-
-RAIZ = Tk()                                          #se crea la variable RAIZ para toda la interfaz y se llama la clase TK()
-
-RAIZ.title(“Humedad”                            # Definimos el nombre de la interfaz
-
-RAIZ.geometry(‘250×60’)                         # Definimos el tamano de la interfaz
+#libreria para utilizacion de esquemas numericos                                                
+import numpy as np                             
 
 
-puerto= serial.Serial(port = ‘/dev/ttyS0’,                   #escribe el nombre del puerto al que esta conectado el dispositivo
+'''
+Se crea la variable Raiz para tener una ventana
+donde viualizar los datos, el titulo sera "Humedad"
+y tendra un tamaño de 250 x 60 pixeles
+'''
+RAIZ = Tk()                                          
+RAIZ.title(“Humedad”)                          
+RAIZ.geometry(‘250×60’)                        
+
+
+'''
+La variable puerto obtendra el puerto por el cual esta conectado el dispositivo 
+con su configuracion.
+'''
+puerto= serial.Serial(port = ‘/dev/ttyS0’,                   
 baudrate = 9600,
 bytesize = serial.EIGHTBITS,
 parity = serial.PARITY_NONE,
@@ -35,29 +48,49 @@ stopbits = serial.STOPBITS_ONE)
 dato = 0
 salto = “\\\\\r”
 orden=”H”
+
+'''
+Se crean todas los elementos que se mostrarán en la ventana,
+la variable etiqueta sólo tendra el el texto "Valor de la humedad",
+la variable etiqueta1 cambiará su valor dependiendo del valor obtenido 
+del sensor.
+'''
+etiqueta = Label(RAIZ, text=”Valor de la Humedad es:”)
+etiqueta.grid(column=4, row=5)
+
+etiqueta1 = Label(RAIZ, text=””)                          
+etiqueta1.grid(column=6, row=5)
+
+#Define en que tiempo y que función sera ejecutada con timer
+timer = threading.Timer(1.1,fun)                            
+#Inicia el temporizador    
+timer.start()
+
+
+RAIZ.mainloop()
+
+#-------- Funciones a utilizar ------------
+
+
+'''
+función:fun
+descripción: obtener y convertir los valores del sensor  
+'''
 def fun():
     while True:
        if (orden is “H”):
-       #reset_output_buffer()
+       
        puerto.write(orden.encode())
        time.sleep(0.1)
        puerto.write(salto.encode())
        time.sleep(0.1)
-       #reset_input_buffer()
        dato = puerto.readline()
-       dato = np.fromstring(dato.decode(‘ascii’, errors = ‘replase’), sep = ‘ ‘)   #convierte los valores para poder utilizarlos como enteros
 
+       #convierte los valores para poder utilizarlos como enteros
+       dato = np.fromstring(dato.decode(‘ascii’, errors = ‘replase’), sep = ‘ ‘)   
+
+       #se muestra el valor en la ventana 
        etiqueta1.config(text= dato[0])
-
-
-
-etiqueta = Label(RAIZ, text=”Valor de la Humedad es:”)
-etiqueta.grid(column=4, row=5)
-
-etiqueta1 = Label(RAIZ, text=””)                               #etiqueta de tipo label que nos muestra el valor dela humedad
-etiqueta1.grid(column=6, row=5)
-
-timer = threading.Timer(1.1,fun)                               # Activa la funcion led en un tiempo de 0.5 segundos
-timer.start()
-
-RAIZ.mainloop()
+       #fin de  (if orden is "H")
+    #fin while 
+# fin de la funcion fun 
